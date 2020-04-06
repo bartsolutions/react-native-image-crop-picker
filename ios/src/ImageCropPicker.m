@@ -826,7 +826,7 @@ RCT_EXPORT_METHOD(openCropper:(NSDictionary *)options
 // then we should scale draw area
 - (CGRect) scaleRect:(RSKImageCropViewController *)controller {
     CGRect rect = controller.maskRect;
-    CGFloat viewWidth = CGRectGetWidth(controller.view.frame);
+    CGFloat viewWidth = CGRectGetWidth(controller.view.frame) - 20;
     CGFloat viewHeight = CGRectGetHeight(controller.view.frame);
 
     double scaleFactor = fmin(viewWidth / rect.size.width, viewHeight / rect.size.height);
@@ -834,6 +834,12 @@ RCT_EXPORT_METHOD(openCropper:(NSDictionary *)options
     rect.size.height *= scaleFactor;
     rect.origin.x = (viewWidth - rect.size.width) / 2;
     rect.origin.y = (viewHeight - rect.size.height) / 2;
+    
+    CGFloat floored = floor(rect.origin.x);
+    NSInteger num = (NSInteger) floored;
+    if (num == 0){
+        rect.origin.x += 10;
+    }
 
     return rect;
 }
