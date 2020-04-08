@@ -403,23 +403,24 @@ RCT_EXPORT_METHOD(openCropper:(NSDictionary *)options
 }
 
 - (void)startCropping:(UIImage *)image {
-    LabeledCropView *imageCropVC = [[LabeledCropView alloc] initWithImage:image];
-    if ([[[self options] objectForKey:@"cropperCircleOverlay"] boolValue]) {
-        imageCropVC.cropMode = RSKImageCropModeCircle;
-    } else {
-        imageCropVC.cropMode = RSKImageCropModeCustom;
-    }
-    imageCropVC.toolbarTitle = [[self options] objectForKey:@"cropperToolbarTitle"];
-    imageCropVC.avoidEmptySpaceAroundImage = [[[self options] objectForKey:@"avoidEmptySpaceAroundImage"] boolValue];
-    imageCropVC.dataSource = self;
-    imageCropVC.delegate = self;
-    NSString *cropperCancelText = [self.options objectForKey:@"cropperCancelText"];
-    NSString *cropperChooseText = [self.options objectForKey:@"cropperChooseText"];
-    [imageCropVC setModalPresentationStyle:UIModalPresentationCustom];
-    [imageCropVC setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    [imageCropVC.cancelButton setTitle:cropperCancelText forState:UIControlStateNormal];
-    [imageCropVC.chooseButton setTitle:cropperChooseText forState:UIControlStateNormal];
     dispatch_async(dispatch_get_main_queue(), ^{
+        LabeledCropView *imageCropVC = [[LabeledCropView alloc] initWithImage:image];
+        if ([[[self options] objectForKey:@"cropperCircleOverlay"] boolValue]) {
+            imageCropVC.cropMode = RSKImageCropModeCircle;
+        } else {
+            imageCropVC.cropMode = RSKImageCropModeCustom;
+        }
+        imageCropVC.toolbarTitle = [[self options] objectForKey:@"cropperToolbarTitle"];
+        imageCropVC.avoidEmptySpaceAroundImage = [[[self options] objectForKey:@"avoidEmptySpaceAroundImage"] boolValue];
+        imageCropVC.dataSource = self;
+        imageCropVC.delegate = self;
+        NSString *cropperCancelText = [self.options objectForKey:@"cropperCancelText"];
+        NSString *cropperChooseText = [self.options objectForKey:@"cropperChooseText"];
+        [imageCropVC setModalPresentationStyle:UIModalPresentationCustom];
+        [imageCropVC setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [imageCropVC.cancelButton setTitle:cropperCancelText forState:UIControlStateNormal];
+        [imageCropVC.chooseButton setTitle:cropperChooseText forState:UIControlStateNormal];
+    
         [[self getRootVC] presentViewController:imageCropVC animated:YES completion:nil];
     });
 }
